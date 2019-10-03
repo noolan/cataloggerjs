@@ -1,4 +1,4 @@
-export const REGEXP = {
+export const REGULAR_EXPRESSIONS = {
   // matches single characters surrounded by whitespace or at the beginning/end of a line
   singleCharacters: /(?:(?<=^|\s).(?=$|\s))/gm,
   

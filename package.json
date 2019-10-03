@@ -1,6 +1,6 @@
 {
   "name": "catalogger",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Library for filtering and sorting lists of objects",
   "main": "./src/catalogger.js",
   "browser": "./dist/catalogger.js",

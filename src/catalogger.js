@@ -428,4 +428,9 @@ const catalog = function (
   return new Catalogger(documents, using, { relevance, results, sort, string })
 }
 
-export { catalog as default, DEFAULT_CONFIG, REGULAR_EXPRESSIONS  }
+export {
+  catalog as default,
+  DEFAULT_CONFIG as config,
+  DEFAULT_CONFIG.string.replacements as replacements,
+  REGULAR_EXPRESSIONS as expressions
+}
