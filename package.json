@@ -1,5 +1,5 @@
 {
-  "name": "Catalogger",
+  "name": "catalogger",
   "version": "0.1.0",
   "description": "Library for filtering and sorting lists of objects",
   "main": "./src/catalogger.js",
