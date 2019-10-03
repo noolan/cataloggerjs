@@ -300,7 +300,7 @@ class Catalogger {
       normalizedString = this[CACHE].stringNormalizations.get(str)
     } else {
       normalizedString = str
-      for (const replacement of this.stringReplacements) {
+      for (const replacement of this[CONFIG].string.replacements) {
         normalizedString = normalizedString.replace(replacement.exp, replacement.val)
       }
       this[CACHE].stringNormalizations.set(str, normalizedString)
