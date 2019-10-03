@@ -1,4 +1,4 @@
-export const REGULAR_EXPRESSIONS = {
+const REGULAR_EXPRESSIONS = {
   // matches single characters surrounded by whitespace or at the beginning/end of a line
   singleCharacters: /(?:(?<=^|\s).(?=$|\s))/gm,
   
@@ -20,3 +20,5 @@ export const REGULAR_EXPRESSIONS = {
   // matches common articles and determiners
   articlesAndDeterminers: /\b(?:a|and|of|to)\b/g
 }
+
+export default REGULAR_EXPRESSIONS
