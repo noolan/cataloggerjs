@@ -428,9 +428,11 @@ const catalog = function (
   return new Catalogger(documents, using, { relevance, results, sort, string })
 }
 
+const replacements = DEFAULT_CONFIG.string.replacements
+
 export {
   catalog as default,
   DEFAULT_CONFIG as config,
-  DEFAULT_CONFIG.string.replacements as replacements,
-  REGULAR_EXPRESSIONS as expressions
+  REGULAR_EXPRESSIONS as expressions,
+  replacements,
 }
