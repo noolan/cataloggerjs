@@ -1,0 +1,19 @@
+{
+  "name": "Catalogger",
+  "version": "0.1.0",
+  "description": "Library for filtering and sorting lists of objects",
+  "main": "./src/catalogger.js",
+  "browser": "./dist/catalogger.js",
+  "scripts": {
+    "dev": "parcel ./src/catalogger.js",
+    "build": "parcel build ./src/catalogger.js"
+  },
+  "author": "Nolan Neustaeter",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "js-levenshtein": "^1.1.6"
+  }
+}
