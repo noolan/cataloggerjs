@@ -294,8 +294,9 @@ class Catalogger {
     return this
   }
 
-  [NORMALIZE_STRING] (str) {
+  [NORMALIZE_STRING] (input) {
     let normalizedString = ''
+    const str = input.toLowerCase().trim()
     if (this[CACHE].stringNormalizations.has(str)) {
       normalizedString = this[CACHE].stringNormalizations.get(str)
     } else {
@@ -350,8 +351,14 @@ class Catalogger {
       }
 
       if (this[CONFIG].relevance.inject) {
-        for (const result of results.entries()) {
-          this[DATA].documents[result[0]][this[CONFIG].relevance.field] = result[1]
+        if (this[QUERY].processed === '') {
+          for (const result of results.entries()) {
+            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = 0
+          }
+        } else {
+          for (const result of results.entries()) {
+            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = result[1]
+          }
         }
       }
       this[RESULTS].valid = true
