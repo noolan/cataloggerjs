@@ -373,7 +373,7 @@ class Catalogger {
             {
               caseFirst: 'false',
               ignorePunctuation: false,
-              localeMatcher: 'best-fit',
+              localeMatcher: 'best fit',
               numeric: true,
               sensitivity: 'base',
               usage: 'sort'
