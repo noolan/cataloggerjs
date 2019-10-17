@@ -297,13 +297,38 @@ class Catalogger {
   [NORMALIZE_STRING] (input) {
     let normalizedString = ''
     const str = input.toLowerCase().trim()
+
     if (this[CACHE].stringNormalizations.has(str)) {
       normalizedString = this[CACHE].stringNormalizations.get(str)
     } else {
       normalizedString = str
+      
       for (const replacement of this[CONFIG].string.replacements) {
-        normalizedString = normalizedString.replace(replacement.exp, replacement.val)
+        if (replacement.grouped) {
+          const exp = new RegExp(replacement.exp)
+          let match = []
+          while ((match = replacement.exp.exec(normalizedString)) !== null) {
+            if (match.length === 1) {
+              normalizedString = normalizedString.substring(0, match.index) + replacement.val + normalizedString.substring(match.index + match[0].length)
+            } else {
+              let start = normalizedString.substring(0, match.index)
+              let middle = normalizedString.substring(match.index, match.index + match[0].length)
+              let end = normalizedString.substring(match.index + match[0].length)
+
+              for (let i = 1; i < match.length; i++) {
+                middle = middle.replace(match[i], replacement)
+              }
+              normalizedString = start + middle + end
+            }
+          }
+        } else {
+          normalizedString = normalizedString.replace(replacement.exp, replacement.val)
+        }
       }
+      // remove any leading or trailing spaces left from the replacements
+      normalizedString = normalizedString.trim()
+
+      // store the result in the cache
       this[CACHE].stringNormalizations.set(str, normalizedString)
     }
     return normalizedString

@@ -1,19 +1,30 @@
 {
   "name": "catalogger",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Library for filtering and sorting lists of objects",
-  "keywords": ["javascript", "search", "filter", "sort", "full-text"],
+  "keywords": [
+    "javascript",
+    "search",
+    "filter",
+    "sort",
+    "full-text"
+  ],
+  "type": "module",
   "main": "./src/catalogger.js",
   "browser": "./dist/catalogger.js",
   "scripts": {
     "dev": "parcel ./index.html",
-    "build": "parcel build ./src/catalogger.js"
+    "build": "parcel build ./src/catalogger.js",
+    "test": "mocha -r esm"
   },
   "author": "Nolan Neustaeter",
   "license": "MIT",
   "homepage": "https://github.com/noolan/cataloggerjs#readme",
   "repository": "github.com:noolan/cataloggerjs",
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "esm": "^3.2.25",
+    "mocha": "^6.2.1",
     "parcel-bundler": "^1.12.3"
   },
   "dependencies": {
