@@ -8,7 +8,7 @@ export const DEFAULT_CONFIG = {
   string: {
     replacements: [
       { exp: REGULAR_EXPRESSIONS.singleCharacters, val: '' },
-      { exp: REGULAR_EXPRESSIONS.punctuation, val: ' ' },
+      { exp: REGULAR_EXPRESSIONS.punctuation, val: ' ', grouped: true },
       { exp: REGULAR_EXPRESSIONS.articlesAndDeterminers, val: ' ' },
       { exp: REGULAR_EXPRESSIONS.tabsAndVerticalWhitespace, val: ' ' },
       { exp: REGULAR_EXPRESSIONS.multiSpace, val: ' ' }

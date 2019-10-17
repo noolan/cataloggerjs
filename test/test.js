@@ -5,6 +5,8 @@ import assert from 'assert'
 
 
 describe('Catalogger', function () {
+  this.timeout(5000)
+
   describe('#NORMALIZE_STRING', function () {
     it('should return the string lower cased', function () {
       const c = catalog([])

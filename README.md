@@ -1,4 +1,4 @@
-# Catalogger.JS v0.3.0 #
+# Catalogger.JS v0.3.1 #
 Library for filtering and sorting lists of objects.
 
 ## Installing ##

@@ -305,10 +305,9 @@ class Catalogger {
       
       for (const replacement of this[CONFIG].string.replacements) {
         if (replacement.grouped) {
-          const exp = new RegExp(replacement.exp)
           let match = []
           while ((match = replacement.exp.exec(normalizedString)) !== null) {
-            if (match.length === 1) {
+            if (match.length === 1 || typeof match[1] === 'undefined') {
               normalizedString = normalizedString.substring(0, match.index) + replacement.val + normalizedString.substring(match.index + match[0].length)
             } else {
               let start = normalizedString.substring(0, match.index)
@@ -316,7 +315,9 @@ class Catalogger {
               let end = normalizedString.substring(match.index + match[0].length)
 
               for (let i = 1; i < match.length; i++) {
-                middle = middle.replace(match[i], replacement)
+                if (typeof match[i] !== 'undefined') {
+                  middle = middle.replace(match[i], replacement.val)
+                }
               }
               normalizedString = start + middle + end
             }
