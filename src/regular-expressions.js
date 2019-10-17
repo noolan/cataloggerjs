@@ -13,11 +13,11 @@ const REGULAR_EXPRESSIONS = {
 
   // matches common punctuation except for decimal/thousands separators and number signs (+/-)
   punctuation: /(?:(\.|\,)(?!\d)|(?:[^\d](\+|\-)[^\d])|([\(\)\[\]\{\}\?\:\;\"\'\_\=]))/g, // has capture group
-  punctuationLookbehind: /[\.\,](?!\d)|(?<!\d)[\+\-](?!\d)|[\(\)\[\]\{\}\?\:\;\"\'\_\=]/g,
+  // punctuationLookbehind: /[\.\,](?!\d)|(?<!\d)[\+\-](?!\d)|[\(\)\[\]\{\}\?\:\;\"\'\_\=]/g,
 
   // matches single letters/digits surrounded by whitespace or at the beginning/end of strings/lines
   singleCharacters: /(?:^|\s)([a-z0-9])(?=$|\s)/gm, // has capture group
-  singleCharactersLookbehind: /(?:(?<=^|\s).(?=$|\s))/gm,
+  // singleCharactersLookbehind: /(?:(?<=^|\s).(?=$|\s))/gm,
   
   // matches single characters at word boundries
   singleCharactersWordBoundries: /\b[a-z0-9]\b/g,
