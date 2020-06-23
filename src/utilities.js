@@ -34,7 +34,7 @@ const getNestedValue = function (
 
   if (keys.length) {
     if (typeof obj !== 'object' || obj === null) {
-      namedLogError('Nested object not found at given key', {obj, key})
+      namedLogError('Nested object not found at given key', {obj, keys})
       return defaultValue
     }
     const key = keys.splice(0, 1)[0]
