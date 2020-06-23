@@ -1,5 +1,5 @@
 const levenshtein = require('js-levenshtein')
-import { cloneEnumerable, getNestedValue, valueToArray, valueToString } from './utilities'
+import { cloneEnumerable, getNestedValue, namedLogError, valueToArray, valueToString } from './utilities'
 import {
   REGULAR_EXPRESSIONS, DEFAULT_CONFIG,
   LENGTH, OCCURENCES, RELEVANCE, WEIGHT,

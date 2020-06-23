@@ -1,3 +1,11 @@
+const clone = function (variable) {
+  if (typeof variable === 'object') {
+    return JSON.parse(JSON.stringify(variable))
+  } else {
+    return variable
+  }
+}
+
 const cloneEnumerable = function (v) {
   try {
     return typeof v === 'object' ? JSON.parse(JSON.stringify(v)) : v
@@ -54,6 +62,23 @@ const getNestedValue = function (
   }
 }
 
+const logError = function (...args) {
+  for (const arg of args) {
+    if (typeof arg === 'object') {
+      console.error(clone(arg))
+    } else {
+      console.error(arg)
+    }
+  }
+  return args
+}
+
+const namedLogError = function (name, ...args) {
+  console.group(name)
+  logError(args)
+  console.groupEnd()
+}
+
 const valueToArray = function (
   value,
   { 
@@ -107,4 +132,4 @@ const valueToString = function (value, { blank = '', glue = ', ' } = { blank: ''
   }
 }
 
-export { cloneEnumerable, getNestedValue, valueToArray, valueToString }
+export { clone, cloneEnumerable, getNestedValue, logError, namedLogError, valueToArray, valueToString }
