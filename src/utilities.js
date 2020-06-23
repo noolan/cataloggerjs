@@ -19,22 +19,22 @@ const getNestedValue = function (
   obj,
   keys = [],
   {
-    defaultValue = undefined, idProperty = 'id', intsAreIds = true, keySeparator = '/'
+    defaultValue = undefined, idProperty = 'id', intsAreIds = true, keySeparator = '/', logErrors = false
   } = {
-    defaultValue: undefined, idProperty: 'id', intsAreIds: true, keySeparator: '/'
+    defaultValue: undefined, idProperty: 'id', intsAreIds: true, keySeparator: '/', logErrors: false
   }
 ) {
   if (typeof keys === 'string') {
     keys = keys.split(keySeparator)
   }
   if (!Array.isArray(keys)) {
-    namedLogError('Invalid keys parameter', {keys})
+    if (logErrors) { namedLogError('Invalid keys parameter', {keys}) }
     return defaultValue
   }
 
   if (keys.length) {
     if (typeof obj !== 'object' || obj === null) {
-      namedLogError('Nested object not found at given key', {obj, keys})
+      if (logErrors) { namedLogError('Nested object not found at given key', {obj, keys}) }
       return defaultValue
     }
     const key = keys.splice(0, 1)[0]
@@ -55,7 +55,7 @@ const getNestedValue = function (
     if (typeof obj[key] !== 'undefined') {
       return getNestedValue(obj[key], keys, { defaultValue, idProperty, intsAreIds })
     }
-    namedLogError('Nested object not found at given key', {obj, key})
+    if (logErrors) { namedLogError('Nested object not found at given key', {obj, key}) }
     return defaultValue
   } else {
     return obj
