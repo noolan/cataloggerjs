@@ -411,7 +411,15 @@ class Catalogger {
             const docB = this[DATA].documents[b[0]]
             let comparison = 0
             for (const field of this[CONFIG].sort.fields) {
-              comparison = collator.compare(docA[field], docB[field])
+              if (typeof field === 'string') {
+                comparison = collator.compare(docA[field], docB[field])
+              } else {
+                if (field.direction.substring(0, 4).toUpperCase() === 'DESC') {
+                  comparison = collator.compare(docB[field.key], docA[field.key])
+                } else {
+                  comparison = collator.compare(docA[field.key], docB[field.key])
+                }
+              }
               if (comparison) {
                 return comparison
               }
@@ -433,21 +441,18 @@ class Catalogger {
 /**
  * Factory function to instantiate and configure a Catalog object
  * 
- * @param  { [Object] } documents
- * @param  { Object }   options
- * @param  { Object }   options.relevance
- * @param  { Boolean }  options.relevance.inject    [ false ]
- * @param  { String }   options.relevance.field     [ '_relevance' ]
- * @param  { Number }   options.relevance.threshold [ -1 ]
- * @param  { Object }   options.results
- * @param  { Number }   options.results.limit       [ -1 ]
- * @param  { Object }   options.sort
- * @param  { Boolean }  options.sort.byRelevance    [ true ]
- * @param  { Boolean }  options.sort.enabled        [ true ]
- * @param  { Boolean }  options.sort.fields         [ null ]
- * @param  { Object }   options.string
- * @param  { [Object] } options.string.replacements [ [{}] ]
- * @param  { [String] } using                       [ [] ]
+ * @param  { [Object] }         documents
+ * @param  { Object }           options.relevance
+ * @param  { Boolean }          options.relevance.inject    [ false ]
+ * @param  { String }           options.relevance.field     [ '_relevance' ]
+ * @param  { Number }           options.relevance.threshold [ -1 ]
+ * @param  { Number }           options.results.limit       [ -1 ]
+ * @param  { Boolean }          options.sort.byRelevance    [ true ]
+ * @param  { Boolean }          options.sort.enabled        [ true ]
+ * @param  { [String/Object] }  options.sort.fields         [ null ]
+ * @param  { [Object] }         options.string.replacements [ [{}] ]
+ * @param  { String/[String] }  using                       [ [] ]
+ * 
  * @return { Catalog }
  */
 const catalog = function (

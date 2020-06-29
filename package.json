@@ -1,6 +1,6 @@
 {
   "name": "catalogger",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Library for filtering and sorting lists of objects",
   "keywords": [
     "javascript",
