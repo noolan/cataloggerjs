@@ -1,5 +1,31 @@
 {
   "people": [],
-  "places": [],
-  "things": []
+  "places": [
+    {
+      "name": "Lower Ball's Falls",
+      "type": "landmark.natural",
+      "address": { "line1": "3292 Sixth Ave", "line2": "", "city": "Lincoln", "region": "Ontario", "country": "Canada", "code": "L0R 1S0" },
+      "coordinates": { "lat": "43.134388", "lon": "-79.383837" },
+      "website": "https://npca.ca/parks/balls-falls"
+    },
+    {
+      "name": "Jerry's Nose"
+    }
+  ],
+  "things": [
+    "raindrops on roses",
+    "whiskers on kittens",
+    "bright copper kettles",
+    "warm woollen mittens",
+    "brown paper packages tied up with strings",
+    "cream colored ponies",
+    "crisp apple strudels",
+    "doorbells",
+    "sleigh bells",
+    "schnitzel with noodles",
+    "wild geese that fly with the moon on their wings",
+    "girls in white dresses with blue satin sashes",
+    "snowflakes that stay on my nose and eyelashes",
+    "silver white winters that melt into springs"
+  ]
 }

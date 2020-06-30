@@ -361,6 +361,7 @@ class Catalogger {
     if (!this[RESULTS].valid) {
       this[INVALIDATE_SORTING]()
       this[RESULTS].items = new Map(Object.keys(this[DATA].documents).map(k => [k, 0]))
+
       const results = this[RESULTS].items
       const dict = this[INDEX].dictionary
       const dictTokens = Object.keys(dict)
@@ -397,9 +398,15 @@ class Catalogger {
       }
 
       if (this[CONFIG].relevance.inject) {
-        const rel = this[QUERY].processed === '' ? 0 : result[1]
-        for (const result of results.entries()) {
-          this[DATA].documents[result[0]][this[CONFIG].relevance.field] = rel
+        // branched the for loop to avoid repeating the same comparison for every result
+        if (this[QUERY].processed === '') {
+          for (const result of results.entries()) {
+            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = 0
+          }
+        } else {
+          for (const result of results.entries()) {
+            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = result[1]
+          }
         }
       }
 
