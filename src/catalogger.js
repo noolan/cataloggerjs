@@ -1,5 +1,5 @@
 const levenshtein = require('js-levenshtein')
-import { cloneEnumerable, getNestedValue, namedLogError, valueToArray, valueToString } from './utilities'
+import { cloneEnumerable, getNestedValue, valueToArray, valueToString } from './utilities'
 import {
   REGULAR_EXPRESSIONS, DEFAULT_CONFIG,
   LENGTH, OCCURENCES, RELEVANCE, WEIGHT,
@@ -21,6 +21,8 @@ class Catalogger {
     this.documents = documents
     this.fields = fields
   }
+
+  // ACCESSORS AND MUTATORS
 
   get config () { return cloneEnumerable(this[CONFIG]) }
   set config ({ relevance={}, results={}, sort={}, string={} } = { relevance:{}, results:{}, sort:{}, string:{} }) {
@@ -107,6 +109,12 @@ class Catalogger {
   get evaluated () { return this[RESULTS].valid }
   get sorted () { return this[RESULTS].sorted }
 
+  // PUBLIC METHODS
+
+  /**
+   * Manually reindex the catalog and returns itself for chaining with other methods
+   * @return { Catalog }
+   */
   reIndex () {
     this[INDEX].valid = false
     this[INVALIDATE_RESULTS]()
@@ -114,21 +122,35 @@ class Catalogger {
     return this
   }
 
+  /**
+   * Updates, caches, then returns the results based on the query
+   * @return { [Any] }
+   */
   resultsFor (query) {
     this.query = query
     return this[GET_RESULTS]()
   }
 
+  /**
+   * Iterator method for processing results in a for..of loop
+   * @return { @@iterator }
+   */
   *[Symbol.iterator] () {
     yield* this.result()
   }
 
+  /**
+   * Generator method for iterating through the current results
+   * @return { Any }
+   */
   *result () {
     const results = this[GET_RESULTS]()
     for (const result of results) {
       yield result
     }
   }
+
+  // Private Methods
 
   [BUILD_INDEX] () {
     if (!this[INDEX].valid) {
@@ -140,14 +162,11 @@ class Catalogger {
         for (const key of keys) {
 
           for (const field of this[DATA].fields) {
-            let value = ''
-
-            if (field.includes('.')) {
-              value = getNestedValue(this[DATA].documents[key], field, { keySeparator: '.' })
-            } else {
-              value = this[DATA].documents[key][field]
-            }
-            const rawText = valueToString(value, { glue: ' '}).toLowerCase().trim()
+            const rawText = valueToString(
+              field.includes('.') ? getNestedValue(this[DATA].documents[key], field, { keySeparator: '.' }) : this[DATA].documents[key][field],
+              { glue: ' '}
+            ).toLowerCase().trim()
+            
             if (rawText !== '') {
               const normalizedText = this[NORMALIZE_STRING](rawText)
               const tokens = normalizedText.split(' ')
@@ -155,7 +174,6 @@ class Catalogger {
 
               for (const token of tokens) {
                 if (typeof dict[token] === 'undefined') {
-                  
                   dict[token] = Object.create(null)
                   dict[token][LENGTH] = token.length
                   dict[token][OCCURENCES] = 0
@@ -339,6 +357,7 @@ class Catalogger {
     if (!this[INDEX].valid) {
       this[BUILD_INDEX]()
     }
+
     if (!this[RESULTS].valid) {
       this[INVALIDATE_SORTING]()
       this[RESULTS].items = new Map(Object.keys(this[DATA].documents).map(k => [k, 0]))
@@ -357,6 +376,7 @@ class Catalogger {
         
         for (const dictToken of dictTokens) {
           let matchValue = 0
+
           if ((queryToken.length > dictToken.length) ? queryToken.includes(dictToken) : dictToken.includes(queryToken)) {
             matchValue = Math.min(queryToken.length, dictToken.length) * 0.1
           } else {
@@ -377,22 +397,19 @@ class Catalogger {
       }
 
       if (this[CONFIG].relevance.inject) {
-        if (this[QUERY].processed === '') {
-          for (const result of results.entries()) {
-            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = 0
-          }
-        } else {
-          for (const result of results.entries()) {
-            this[DATA].documents[result[0]][this[CONFIG].relevance.field] = result[1]
-          }
+        const rel = this[QUERY].processed === '' ? 0 : result[1]
+        for (const result of results.entries()) {
+          this[DATA].documents[result[0]][this[CONFIG].relevance.field] = rel
         }
       }
+
       this[RESULTS].valid = true
     }
 
     if (!this[RESULTS].sorted) {
       if (this[CONFIG].sort.enabled) {
         let results = Array.from(this[RESULTS].items.entries())
+
         if (Array.isArray(this[CONFIG].sort.fields) && this[CONFIG].sort.fields.length) {
           const collator = new Intl.Collator(
             undefined,
@@ -427,11 +444,14 @@ class Catalogger {
             return comparison
           })
         }
+
         if (this[CONFIG].sort.byRelevance) {
           results.sort((a, b) => b[1] - a[1])
         }
+
         this[RESULTS].items = new Map(results)
       }
+
       this[RESULTS].sorted = true
     }
     return this
@@ -444,7 +464,7 @@ class Catalogger {
  * @param  { [Object] }         documents
  * @param  { Object }           options.relevance
  * @param  { Boolean }          options.relevance.inject    [ false ]
- * @param  { String }           options.relevance.field     [ '_relevance' ]
+ * @param  { String }           options.relevance.field     [ Symbol('catalogger_relevance') ]
  * @param  { Number }           options.relevance.threshold [ -1 ]
  * @param  { Number }           options.results.limit       [ -1 ]
  * @param  { Boolean }          options.sort.byRelevance    [ true ]
@@ -472,5 +492,6 @@ export {
   catalog as default,
   DEFAULT_CONFIG as config,
   REGULAR_EXPRESSIONS as expressions,
-  replacements,
+  RELEVANCE,
+  replacements
 }
