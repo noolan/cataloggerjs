@@ -24,7 +24,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "esm": "^3.2.25",
-    "mocha": "^6.2.3",
+    "mocha": "^10.2.0",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
